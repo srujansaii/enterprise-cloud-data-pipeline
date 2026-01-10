@@ -10,4 +10,12 @@ import duckdb
 
 RAW_PATH = Path("data/raw_sources")
 BRONZE_PATH = Path("lake/bronze")
+def ingest_file(file_path: Path, table_name: str):
+    pass
+
+def run_ingestion():
+    pass
+
+if __name__ == "__main__":
+    run_ingestion()
 
