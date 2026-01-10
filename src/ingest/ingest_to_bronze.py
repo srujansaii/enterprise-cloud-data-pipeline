@@ -19,4 +19,4 @@ def run_ingestion():
 if __name__ == "__main__":
     run_ingestion()
 BRONZE_PATH.mkdir(parents=True, exist_ok=True)
-
+con = duckdb.connect()
