@@ -1,0 +1,11 @@
+ProductID,ProductName,Price,Category
+C101,Sports Shoes,79.99,Clothing
+C102,Running Shorts,24.99,Clothing
+C103,Cotton T-Shirt,14.99,Clothing
+C104,Denim Jacket,59.99,Clothing
+C105,Women’s Handbag,45.99,Clothing
+J201,Silver Necklace,39.99,Jewelry
+J202,Gold Plated Earrings,29.99,Jewelry
+J203,Bracelet Set,19.99,Jewelry
+J204,Diamond Ring (Synthetic),89.99,Jewelry
+J205,Pearl Pendant,49.99,Jewelry
