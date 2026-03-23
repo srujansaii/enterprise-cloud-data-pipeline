@@ -9,13 +9,11 @@
 from pathlib import Path
 import duckdb
 
-RAW_PATH = Path("data/rawsources")
+RAW_PATH = Path("data/raw_sources")
 BRONZE_PATH = Path("lake/bronze")
 
-# Ensure bronze folder exists
 BRONZE_PATH.mkdir(parents=True, exist_ok=True)
 
-# Initialize DuckDB connection
 con = duckdb.connect()
 
 
@@ -23,22 +21,26 @@ def ingest_file(file_path: Path, table_name: str):
     print(f"Ingesting {file_path.name} -> bronze/{table_name}.parquet")
 
     con.execute(f"""
-        CREATE OR REPLACE TABLE {table_name} AS
+        CREATE OR REPLACE TABLE "{table_name}" AS
         SELECT *
         FROM read_csv_auto('{file_path.as_posix()}')
     """)
 
     con.execute(f"""
-        COPY {table_name}
+        COPY "{table_name}"
         TO '{(BRONZE_PATH / f"{table_name}.parquet").as_posix()}'
         (FORMAT 'parquet')
     """)
 
-print("Running ingestion...")
+
 def run_ingestion():
-    for file in RAW_PATH.glob("*.csv"):
-        table_name = file.stem
-        ingest_file(file, table_name)
+    print("Running ingestion...")
+    files = list(RAW_PATH.glob("*"))
+
+    for file in files:
+        if file.suffix.lower() == ".csv":
+            table_name = file.stem.lower().replace(" ", "_")
+            ingest_file(file, table_name)
 
 
 if __name__ == "__main__":
