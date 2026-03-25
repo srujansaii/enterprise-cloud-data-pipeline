@@ -17,10 +17,14 @@ SILVER_PATH.mkdir(parents=True, exist_ok=True)
 
 con = duckdb.connect()
 def transform_table(table_name: str):
-    pass
+    print(f"Transforming {table_name}...")
+
+    df = con.execute(f"""
+    SELECT * FROM '{(BRONZE_PATH / f"{table_name}.parquet").as_posix()}'""").df()
 
 def run_silver_transformation():
-    pass
+    def run_silver_transformation():
+        transform_table("customers")
 
 if __name__ == "__main__":
     run_silver_transformation()
