@@ -18,3 +18,7 @@ These decisions are fixed to keep scope controlled and ensure the pipeline ships
   - customers
   - products
   - stores (or regions)
+
+
+##current selection
+-silver layer completed: cleaned and standardized parquet datasets written to lake/silver
