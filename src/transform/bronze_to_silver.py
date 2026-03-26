@@ -75,6 +75,19 @@ def transform_table(table_name: str):
                 critical_cols = ["store_id"]
                 df = df.dropna(subset=[col for col in critical_cols if col in df.columns])
 
+        if table_name == "customers":
+            if "email" in df.columns:
+                df["email"] = df["email"].str.lower()
+
+        if table_name == "products":
+            if "category" in df.columns:
+                df["category"] = df["category"].str.lower()
+
+        if table_name == "stores":
+            for col in ["store_name", "city", "state", "region"]:
+                if col in df.columns:
+                    df[col] = df[col].str.title()
+
     output_path = SILVER_PATH / f"{table_name}.parquet"
     print("Writing to:", output_path)
 
