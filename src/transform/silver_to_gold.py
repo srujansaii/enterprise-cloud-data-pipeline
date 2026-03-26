@@ -18,7 +18,17 @@ con = duckdb.connect()
 
 
 def build_dim_customers():
-    pass
+    print("Building dim_customers...")
+
+    df = con.execute(f"""
+        SELECT DISTINCT *
+        FROM '{(SILVER_PATH / "customers.parquet").as_posix()}'
+    """).df()
+
+    output_path = GOLD_PATH / "dim_customers.parquet"
+    df.to_parquet(output_path, index=False)
+
+    print("dim_customers written")
 
 
 def build_dim_products():
@@ -34,7 +44,8 @@ def build_fact_sales():
 
 
 def run_gold_transformation():
-    pass
+    print("Running gold transformation...")
+    build_dim_customers()
 
 
 if __name__ == "__main__":
