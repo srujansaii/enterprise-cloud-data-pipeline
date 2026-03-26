@@ -32,20 +32,53 @@ def build_dim_customers():
 
 
 def build_dim_products():
-    pass
+    print("Building dim_products...")
+
+    df = con.execute(f"""
+        SELECT DISTINCT *
+        FROM '{(SILVER_PATH / "products.parquet").as_posix()}'
+    """).df()
+
+    output_path = GOLD_PATH / "dim_products.parquet"
+    df.to_parquet(output_path, index=False)
+
+    print("dim_products written")
 
 
 def build_dim_stores():
-    pass
+    print("Building dim_stores...")
+
+    df = con.execute(f"""
+        SELECT DISTINCT *
+        FROM '{(SILVER_PATH / "stores.parquet").as_posix()}'
+    """).df()
+
+    output_path = GOLD_PATH / "dim_stores.parquet"
+    df.to_parquet(output_path, index=False)
+
+    print("dim_stores written")
 
 
 def build_fact_sales():
-    pass
+    print("Building fact_sales...")
+
+    df = con.execute(f"""
+        SELECT *
+        FROM '{(SILVER_PATH / "order_items.parquet").as_posix()}'
+    """).df()
+
+    output_path = GOLD_PATH / "fact_sales.parquet"
+    df.to_parquet(output_path, index=False)
+
+    print("fact_sales written")
 
 
 def run_gold_transformation():
     print("Running gold transformation...")
     build_dim_customers()
+    build_dim_products()
+    build_dim_stores()
+    build_fact_sales()
 
 
 if __name__ == "__main__":
