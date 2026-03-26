@@ -37,6 +37,43 @@ def transform_table(table_name: str):
 
     for col in df.select_dtypes(include="object").columns:
         df[col] = df[col].astype(str).str.strip()
+        if table_name == "orders":
+            if "order_date" in df.columns:
+                df["order_date"] = df["order_date"].astype("datetime64[ns]")
+
+        if table_name == "customers":
+            for col in ["created_date", "signup_date"]:
+                if col in df.columns:
+                    df[col] = df[col].astype("datetime64[ns]")
+
+        if table_name == "order_items":
+            for col in ["quantity", "unit_price", "price"]:
+                if col in df.columns:
+                    df[col] = df[col].astype(float)
+
+        if table_name == "products":
+            if "price" in df.columns:
+                df["price"] = df["price"].astype(float)
+        
+        if table_name == "customers":
+                critical_cols = ["customer_id"]
+                df = df.dropna(subset=[col for col in critical_cols if col in df.columns])
+
+        if table_name == "orders":
+                critical_cols = ["order_id", "customer_id"]
+                df = df.dropna(subset=[col for col in critical_cols if col in df.columns])
+
+        if table_name == "order_items":
+                critical_cols = ["order_id", "product_id"]
+                df = df.dropna(subset=[col for col in critical_cols if col in df.columns])
+
+        if table_name == "products":
+                critical_cols = ["product_id"]
+                df = df.dropna(subset=[col for col in critical_cols if col in df.columns])
+
+        if table_name == "stores":
+                critical_cols = ["store_id"]
+                df = df.dropna(subset=[col for col in critical_cols if col in df.columns])
 
     output_path = SILVER_PATH / f"{table_name}.parquet"
     print("Writing to:", output_path)
